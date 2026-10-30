@@ -1,0 +1,14 @@
+# Solo para desarrollo local: Postgres 16 en el puerto 5433
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: fvf_evalfutfem
+      POSTGRES_USER: evalfutfem_app
+      POSTGRES_PASSWORD: dev_solo_local
+    ports:
+      - "127.0.0.1:5433:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+volumes:
+  pgdata:

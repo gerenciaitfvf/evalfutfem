@@ -1,0 +1,27 @@
+server {
+  listen 80;
+  server_name _;
+  root /usr/share/nginx/html;
+  server_tokens off;
+
+  # Recursos con hash en el nombre: caché larga
+  location /assets/ {
+    include /etc/nginx/snippets/seguridad.conf;
+    add_header Cache-Control "public, max-age=31536000, immutable";
+    try_files $uri =404;
+  }
+
+  # Formulario de evaluación (página propia)
+  location /evaluacion/ {
+    include /etc/nginx/snippets/seguridad.conf;
+    add_header Cache-Control "no-cache";
+    try_files $uri /evaluacion/index.html;
+  }
+
+  # App: login, Mi cuenta y panel FVF (rutas del lado del cliente)
+  location / {
+    include /etc/nginx/snippets/seguridad.conf;
+    add_header Cache-Control "no-cache";
+    try_files $uri $uri/ /index.html;
+  }
+}

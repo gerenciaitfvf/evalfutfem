@@ -1,0 +1,50 @@
+[
+  {
+    "nombre": "Academia Puerto Cabello",
+    "valor": "Academia Puerto Cabello",
+    "estado": "Carabobo",
+    "logo": "academia-puerto-cabello.png"
+  },
+  {
+    "nombre": "ADIFFEM",
+    "valor": "ADIFFEM",
+    "estado": "Miranda",
+    "logo": "adiffem.png"
+  },
+  {
+    "nombre": "Carabobo FC",
+    "valor": "Carabobo FC",
+    "estado": "Carabobo",
+    "logo": "carabobo-fc.png"
+  },
+  {
+    "nombre": "Caracas FC",
+    "valor": "Caracas FC",
+    "estado": "Distrito Capital",
+    "logo": "caracas-fc.png"
+  },
+  {
+    "nombre": "Deportivo La Guaira",
+    "valor": "Deportivo La Guaira FC",
+    "estado": "Miranda",
+    "logo": "deportivo-la-guaira.png"
+  },
+  {
+    "nombre": "Marítimo La Guaira",
+    "valor": "Marítimo de La Guaira",
+    "estado": "La Guaira",
+    "logo": "maritimo-la-guaira.png"
+  },
+  {
+    "nombre": "Metropolitanos",
+    "valor": "Metropolitanos FC",
+    "estado": "Distrito Capital",
+    "logo": "metropolitanos.png"
+  },
+  {
+    "nombre": "UCV FC",
+    "valor": "UCV FC",
+    "estado": "Distrito Capital",
+    "logo": "ucv-fc.png"
+  }
+]

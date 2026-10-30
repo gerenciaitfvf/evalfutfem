@@ -1,0 +1,72 @@
+@import "tailwindcss";
+
+/* Tipografías del formulario original (Prometo para títulos, Jost para texto) */
+@font-face{font-family:'Prometo';font-weight:300;font-style:normal;font-display:swap;src:url(/fonts/prometo-300.ttf) format('truetype')}
+@font-face{font-family:'Prometo';font-weight:700;font-style:normal;font-display:swap;src:url(/fonts/prometo-700.ttf) format('truetype')}
+@font-face{font-family:'Prometo';font-weight:800;font-style:normal;font-display:swap;src:url(/fonts/prometo-800.ttf) format('truetype')}
+@font-face{font-family:'Jost';font-weight:400;font-style:normal;font-display:swap;src:url(/fonts/jost-400.woff2) format('woff2')}
+@font-face{font-family:'Jost';font-weight:500;font-style:normal;font-display:swap;src:url(/fonts/jost-500.woff2) format('woff2')}
+@font-face{font-family:'Jost';font-weight:600;font-style:normal;font-display:swap;src:url(/fonts/jost-600.woff2) format('woff2')}
+@font-face{font-family:'Jost';font-weight:700;font-style:normal;font-display:swap;src:url(/fonts/jost-700.woff2) format('woff2')}
+
+/* Tokens de color del formulario v7 (mismos valores del :root original) */
+@theme {
+  --color-lila: #68348B;
+  --color-lila2: #4E2369;
+  --color-lila3: #2A1238;
+  --color-fucsia: #E856EF;
+  --color-fucsiad: #A42AAB;
+  --color-oro: #AF9757;
+  --color-orod: #7A6633;
+  --color-orol: #F3ECDC;
+  --color-vino: #6B0F2B;
+  --color-rosa: #C48F9D;
+  --color-arena: #E3D7C1;
+  --color-ok: #2E8B57;
+  --color-warn: #D99A00;
+  --color-no: #C0392B;
+  --color-bg: #F6F2F7;
+  --color-card: #FFFFFF;
+  --color-ink: #22152B;
+  --color-muted: #62566A;
+  --color-line: #E2D7E8;
+  --color-soft: #F4EEF7;
+  --color-field: #FBF9FC;
+  /* Texto de títulos y acentos: lila en claro, rosado legible en oscuro */
+  --color-titulo: #4E2369;
+  --color-acento: #68348B;
+  --color-m0: #68348B;
+  --color-m1: #6B0F2B;
+  --color-m2: #8A3A52;
+  --color-m3: #7A6633;
+  --color-m4: #9B2DA3;
+  --color-m5: #3E1A56;
+  --font-head: "Prometo", "Jost", system-ui, sans-serif;
+  --font-body: "Jost", system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+
+/* Modo oscuro: los mismos valores oscuros del formulario */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-bg: #140D18;
+    --color-card: #1F1525;
+    --color-ink: #F2ECF5;
+    --color-muted: #BBAEC6;
+    --color-line: #3D2C48;
+    --color-soft: #2A1C33;
+    --color-field: #180F1D;
+    --color-orol: #3A3020;
+    --color-titulo: #E9D3F0;
+    --color-acento: #D59CDD;
+  }
+}
+
+@layer base {
+  html { -webkit-text-size-adjust: 100%; }
+  body { @apply bg-bg text-ink font-body antialiased; line-height: 1.45; }
+  :focus-visible { outline: 3px solid var(--color-fucsia); outline-offset: 2px; }
+  h1, h2, h3 { @apply font-head; }
+}
+
+/* Patrón de aros de la portada del formulario, reutilizado en login */
+.aros { position: absolute; right: -180px; top: -120px; width: 560px; height: 560px; pointer-events: none; opacity: .55; }

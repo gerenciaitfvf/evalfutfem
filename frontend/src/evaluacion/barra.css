@@ -1,0 +1,18 @@
+/* Barra superior de la evaluación (club, Mi cuenta, Salir). Usa los tokens del formulario. */
+.tb{background:var(--lila3);color:#fff;font-family:var(--body)}
+.tb-in{max-width:980px;margin:0 auto;padding:8px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.tb-club{display:flex;align-items:center;gap:10px;min-width:0}
+.tb-club img,.tb-ini{width:32px;height:32px;border-radius:50%;background:#fff;object-fit:contain;padding:3px;flex:none}
+.tb-ini{display:grid;place-items:center;color:var(--lila2);font-weight:700;font-size:12px}
+.tb-club b{display:block;font-family:var(--head);font-weight:700;font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tb-club small{display:block;color:#D9C6E3;font-size:12px}
+.tb nav{display:flex;align-items:center;gap:6px;flex:none}
+.tb nav a,.tb nav button{color:#fff;text-decoration:none;font:500 14px var(--body);background:transparent;border:1px solid rgba(255,255,255,.28);border-radius:999px;padding:6px 12px;cursor:pointer}
+.tb nav a:hover,.tb nav button:hover{background:rgba(232,86,239,.22);border-color:var(--fucsia)}
+.tb-cargando,.tb-error{font-family:var(--body);color:var(--ink);max-width:560px;margin:80px auto;padding:0 16px;text-align:center}
+.tb-error h2{font-family:var(--head);color:var(--lila2)}
+.tb-error a{color:var(--lila)}
+.roaviso{position:static;margin:0 0 14px}
+form.ro .q{opacity:.92}
+@media (max-width:420px){.tb nav a{display:none}}
+.roaviso[hidden]{display:none}
