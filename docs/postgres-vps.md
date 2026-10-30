@@ -1,6 +1,6 @@
 # PostgreSQL en el VPS C (217.77.9.218 · Ubuntu 26.04)
 
-Base de datos: `fvf_evalfutfem` · Usuario de la app: `evalfutfem_app` (sin privilegios de superusuario).
+Base de datos: `fvf_evalfutfem`. El backend se conecta con el **usuario que ya usa hoy el VPS B** (opción A del paso 2) o con un usuario nuevo solo para esta app (opción B).
 Solo el backend (VPS B, **217.77.11.254**) puede conectarse, por SSL.
 
 Los comandos asumen una sesión con `sudo`. `PGVER` es la versión que instale Ubuntu (`ls /etc/postgresql`).
@@ -13,6 +13,35 @@ PGVER=$(ls /etc/postgresql | sort -V | tail -1); echo $PGVER
 ```
 
 ## 2. Usuario y base de datos
+
+### Opción A: usar el usuario que ya conecta desde el VPS B
+
+Reemplace `USUARIO_EXISTENTE` por ese usuario. El usuario no necesita ser superusuario, pero debe ser **dueño** de la base `fvf_evalfutfem`, porque el backend crea y modifica sus tablas con las migraciones.
+
+```bash
+sudo -u postgres psql <<'SQL'
+CREATE DATABASE fvf_evalfutfem OWNER "USUARIO_EXISTENTE" ENCODING 'UTF8' TEMPLATE template0;
+REVOKE ALL ON DATABASE fvf_evalfutfem FROM PUBLIC;
+\c fvf_evalfutfem
+CREATE EXTENSION IF NOT EXISTS citext;
+REVOKE ALL ON SCHEMA public FROM PUBLIC;
+GRANT ALL ON SCHEMA public TO "USUARIO_EXISTENTE";
+SQL
+```
+
+Si la base ya existe con otro dueño, en lugar del `CREATE DATABASE` ejecute `ALTER DATABASE fvf_evalfutfem OWNER TO "USUARIO_EXISTENTE";`.
+
+Revise que el usuario use `scram-sha-256` (si sale `md5`, vuelva a asignarle la clave con `\password USUARIO_EXISTENTE` después de `SET password_encryption = 'scram-sha-256';`):
+
+```bash
+sudo -u postgres psql -tAc "select rolname, rolsuper, left(rolpassword, 13) from pg_authid where rolname='USUARIO_EXISTENTE'"
+```
+
+Si ese usuario también lo usan otras aplicaciones, conviene la opción B: así, si una de ellas se ve comprometida, no expone los datos de los clubes.
+
+En los pasos 5 y 7 use `USUARIO_EXISTENTE` donde dice `evalfutfem_app`.
+
+### Opción B: usuario nuevo solo para esta app (recomendado)
 
 Genere una clave larga y guárdela en el gestor de claves de la FVF (va luego en Dokploy):
 
@@ -101,20 +130,13 @@ psql "postgres://evalfutfem_app:CLAVE@217.77.9.218:5432/fvf_evalfutfem?sslmode=v
 
 Desde cualquier otra IP la conexión debe ser rechazada.
 
-## 8. Respaldo diario (14 días)
+## 8. Respaldos
 
-```bash
-sudo mkdir -p /var/backups/evalfutfem && sudo chown postgres:postgres /var/backups/evalfutfem && sudo chmod 700 /var/backups/evalfutfem
-sudo tee /etc/cron.d/evalfutfem-backup >/dev/null <<'CRON'
-# Respaldo diario a las 2:30 a. m. (hora del servidor); se guardan 14 días
-30 2 * * * postgres pg_dump -Fc fvf_evalfutfem > /var/backups/evalfutfem/fvf_evalfutfem_$(date +\%F).dump && find /var/backups/evalfutfem -name '*.dump' -mtime +14 -delete
-CRON
-```
+El VPS C ya tiene una tarea que respalda todas las bases, así que **no hay que crear otra**. Solo hay que confirmar que la nueva base `fvf_evalfutfem` entra en ese respaldo:
 
-Recomendado: copiar esos archivos fuera del VPS (otro servidor o almacenamiento de la FVF).
+- Si la tarea usa `pg_dumpall` o recorre todas las bases del servidor, la incluye sola.
+- Si la tarea tiene una lista fija de bases, hay que agregar `fvf_evalfutfem` a esa lista.
 
-Restaurar un respaldo:
+Para comprobarlo, al día siguiente del primer despliegue busque el archivo de `fvf_evalfutfem` en el destino de esos respaldos.
 
-```bash
-sudo -u postgres pg_restore --clean --if-exists -d fvf_evalfutfem /var/backups/evalfutfem/fvf_evalfutfem_AAAA-MM-DD.dump
-```
+La base guarda las respuestas de los clubes, los usuarios (solo el hash de las claves), las sesiones y la auditoría.

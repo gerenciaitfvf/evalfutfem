@@ -21,7 +21,7 @@ Sin estos registros Dokploy no puede emitir los certificados de Let's Encrypt.
 
 ## 1. Base de datos
 
-Siga [postgres-vps.md](postgres-vps.md) en el VPS C antes de desplegar el backend.
+Siga [postgres-vps.md](postgres-vps.md) en el VPS C antes de desplegar el backend. No hace falta crear un respaldo aparte: la tarea que ya respalda todas las bases del VPS C también cubre esta.
 
 ## 2. Backend · VPS B
 
@@ -39,7 +39,9 @@ Siga [postgres-vps.md](postgres-vps.md) en el VPS C antes de desplegar el backen
 ```
 NODE_ENV=production
 PORT=3000
-DATABASE_URL=postgres://evalfutfem_app:CLAVE_DE_POSTGRES@217.77.9.218:5432/fvf_evalfutfem
+# Usuario y clave de Postgres que ya usa el VPS B (o evalfutfem_app si creó uno nuevo).
+# Si la clave tiene caracteres como @ : / # ? %, escríbalos codificados (por ejemplo @ = %40).
+DATABASE_URL=postgres://USUARIO:CLAVE@217.77.9.218:5432/fvf_evalfutfem
 DATABASE_SSL=true
 DATABASE_SSL_CA=/app/certs/pg-ca.crt
 SESSION_SECRET=<salida de: openssl rand -base64 48>
@@ -92,4 +94,4 @@ Imprime usuario y clave temporal de cada club que todavía no tenga usuario. Ent
 - [ ] El administrador entra, cambia la clave y ve el tablero con los 8 clubes
 - [ ] Un club entra, cambia la clave, ve su escudo fijo en el Módulo 0 y el borrador se guarda
 - [ ] Desde una IP distinta de 217.77.11.254 no se puede abrir el puerto 5432 del VPS C
-- [ ] El respaldo de las 2:30 a. m. aparece en `/var/backups/evalfutfem`
+- [ ] La tarea de respaldos del VPS C incluye la base `fvf_evalfutfem` (ver el paso 8 de la guía de Postgres)
